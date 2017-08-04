@@ -5,6 +5,7 @@ $values=array(
     'sd'=>'123',
     'fa'=>'',
     'we'=>'asd',
+    'qf'=>'42',
 );
 
 require('check.php');
