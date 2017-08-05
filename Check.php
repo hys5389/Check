@@ -9,15 +9,15 @@
 class Check
 {
     //数据
-    private $values=array();
+    protected $values=array();
     //规则
-    private $rules=array();
+    protected $rules=array();
     //报错代替
-    private $msgs=array();
+    protected $msgs=array();
     //错误信息
-    private $errors=array();
+    protected $errors=array();
     //单例对象
-    private static $me;
+    protected static $me;
 
 /*------------------------------------------------------ */
 //-- 开发者可以使用的方法
@@ -29,11 +29,11 @@ class Check
  */
 //-- Check::values($values)->rules([])->remsg([])->check();
 /*------------------------------------------------------ */
-    private function __construct($values)
+    protected function __construct($values)
     {
         $this->values = $values;
     }
-    private function __clone()
+    protected function __clone()
     {
         trigger_error('Clone is not allowed !',E_USER_WARNING);
     }
@@ -158,7 +158,7 @@ class Check
      * 简要描述：检查数据是否为必填项
      * ------------------------------------------
      */
-    private function required($value)
+    protected function required($value)
     {
         if(empty($value))
         {
@@ -177,7 +177,7 @@ class Check
      * 输入：string
      * ------------------------------------------
      */
-    private function numeric($value)
+    protected function numeric($value)
     {
         if(!preg_match("/^[0-9]+$/", $value))
         {
@@ -189,7 +189,7 @@ class Check
         }
     }
 
-    private function email($value)
+    protected function email($value)
     {
         $pattern = "/^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)$/";
 
@@ -211,7 +211,7 @@ class Check
      * 输入：$value string;$option array
      * ------------------------------------------
      */
-    private function between($value,$option)
+    protected function between($value,$option)
     {
         $minLength = $option[0];
         $maxLength = $option[1];
