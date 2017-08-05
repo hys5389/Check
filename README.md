@@ -12,5 +12,4 @@
 
 ``` 
 Check::values($values)->rules([])->remsg([])->check();
-
 ```
