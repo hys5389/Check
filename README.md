@@ -10,6 +10,39 @@
 
 <font face="微软雅黑" size=3><br></font>
 
-``` 
-Check::values($values)->rules([])->remsg([])->check();
 ```
+Check::values($values)->rules($rules)->remsg($remsg)->check();
+
+```
+<br>
+
+参数举例：<br>
+
+1. $values -> 数组 （需要验证的值） 
+
+	
+	```
+	$values ＝ ［
+		'name' => 'abcdefg',
+		'sex' => 'man',
+	];
+	```
+2.  $rules -> array（验证的规则）
+
+	```
+	$rules ＝ ［
+		'name' => 'required|between:2,10|numeric',
+		'sex' => 'required',
+	];
+	```
+3. $remsg -> array（自定义验证后返回的错误提示）
+
+	```
+	$remsg ＝ ［
+		'required' => '{$name} 不能为空',
+		'between' => '{$name} 必须在 {$option1} 与 {$option2} 之间',
+	];
+	```
+
+
+
