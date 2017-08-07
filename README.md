@@ -8,9 +8,8 @@
 <br>
 ### 适用php版本：
 <br>
-<br>
 <font face="微软雅黑" size=5>php5.3++</font>
-<br>
+
 <br>
 
 ## 验证的实现方法：
