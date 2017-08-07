@@ -2,21 +2,23 @@
 //if($_POST)
 //{
 $values=array(
-    'sd'=>'123',
+    'sd'=>'12asdasd',
     'fa'=>'',
     'we'=>'asd',
     'qf'=>'42',
 );
 
-require('check.php');
+require('MyCheck.php');
 header('Content-type:text/html;charset=utf-8');
-$cc=Check::values($values)->rules(array(
-    'sd'=>'required | numeric | between : 1,5|',
+$cc=MyCheck::values($values)->rules(array(
+    'sd'=>'required | numeric | between : 1,3|myok',
     'fa'=>'required | numeric',
     'we'=>'required | numeric',
 ))->check();
-var_dump($cc->jsonErrors());
-var_dump($cc->errors());
+
+//var_dump($cc->jsonErrors());
+var_dump($cc);
+//var_dump($cc->errors());
 
 //var_dump(Check::values($values));
 die;

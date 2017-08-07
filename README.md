@@ -50,5 +50,10 @@ Check::values($values)->rules($rules)->remsg($remsg)->check();
 	];
 	```
 
+## 已经写好的规则有：
+<br>
+
+1. ``required``  </font><font face="微软雅黑" size=4>必填项</font>
+2. ``between``  </font><font face="微软雅黑" size=4>必填项</font>
 
 

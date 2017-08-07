@@ -44,20 +44,20 @@ class Check
     {
         if(!is_array($values) || empty($values))
         {
-            self::$me->errors['system']['status'] ='error';
-            self::$me->errors['system']['msg'] ='请填写正确形式的数据';
-            return self::$me;
+            static::$me->errors['system']['status'] ='error';
+            static::$me->errors['system']['msg'] ='请填写正确形式的数据';
+            return static::$me;
         }
-        if(!(self::$me instanceof self))
+        if(!(static::$me instanceof static))
         {
 
-            self::$me = new self($values);
+            static::$me = new static($values);
         }
         else
         {
-            self::$me->values = $values;
+            static::$me->values = $values;
         }
-        return self::$me;
+        return static::$me;
     }
 
     //验证规则,以数组形式
@@ -113,6 +113,10 @@ class Check
                             if(!empty($error))
                             {
                                 $error = str_replace('{$name}',$k,$error);
+                                foreach($option as $key=>$v)
+                                {
+                                    $error = str_replace('{$option'.($key+1).'}',$v,$error);
+                                }
                                 $this->errors[$k][] = $error;
                             }
                         }
@@ -220,7 +224,7 @@ class Check
 
         if($length < $minLength || $length > $maxLength)
         {
-            return '{$name} 必须在 '.$minLength.' ~ '.$maxLength.' 之间';
+            return '{$name} 必须在 {$option1} ~ {$option2} 之间';
         }
         else
         {

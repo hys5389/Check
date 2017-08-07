@@ -1,0 +1,20 @@
+{
+  "name": "HHVP/Check",
+  "description": "一个验证类",
+  "keywords": [
+    "验证"
+  ],
+  "minimum-stability": "Check",
+  "authors": [
+    {
+      "name": "hhvp",
+      "email": "328296695@qq.com"
+    }
+  ],
+  "require": {
+
+    "php": ">=5.3"
+  },
+  "license": "MIT"
+  }
+}
