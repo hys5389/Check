@@ -5,7 +5,7 @@
  * Date: 17/8/7
  * Time: 上午10:17
  */
-require('Check.php');
+require('../Check.php');
 class MyCheck extends Check
 {
     public function myok($values)
