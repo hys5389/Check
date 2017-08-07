@@ -8,7 +8,7 @@
 <br>
 ### 适用php版本：
 <br>
-<font face="微软雅黑" size=5>php5.3++</font>
+<font face="微软雅黑" size=5>php5.3+</font>
 
 <br>
 
