@@ -54,6 +54,6 @@ Check::values($values)->rules($rules)->remsg($remsg)->check();
 <br>
 
 1. ``required``  </font><font face="微软雅黑" size=4>必填项</font>
-2. ``between``  </font><font face="微软雅黑" size=4>必填项</font>
+2. ``between``  </font><font face="微软雅黑" size=4>介于``min``与``max``之间</font>
 
 
