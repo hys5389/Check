@@ -4,7 +4,7 @@
   "keywords": [
     "验证"
   ],
-  "minimum-stability": "Check",
+  "minimum-stability": "beta",
   "authors": [
     {
       "name": "hhvp",
