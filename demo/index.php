@@ -2,7 +2,7 @@
 //if($_POST)
 //{
 $values=array(
-    'sd'=>'12asdasd',
+    'sd'=>'admin@d',
     'fa'=>'',
     'we'=>'asd',
     'qf'=>'42',
@@ -11,14 +11,12 @@ $values=array(
 require('MyCheck.php');
 header('Content-type:text/html;charset=utf-8');
 $cc=MyCheck::values($values)->rules(array(
-    'sd'=>'required | numeric | between : 1,3|myok',
-    'fa'=>'required | numeric',
-    'we'=>'required | numeric',
+    'sd'=>'required | numeric | between : 1,3|myok|email',
 ))->check();
 
 //var_dump($cc->jsonErrors());
-var_dump($cc);
-//var_dump($cc->errors());
+//var_dump($cc);
+var_dump($cc->errors());
 
 //var_dump(Check::values($values));
 die;

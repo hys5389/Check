@@ -83,18 +83,20 @@ class Check
     public function check()
     {
         $rules = $this->rules;
+
         foreach($this->values as $k => $v)
         {
+
             if(isset($rules[$k]))
             {
                 $one_rules = explode('|',$rules[$k]);
-
                 foreach($one_rules as $one_rule)
                 {
                     //有参数
                     if(!strpos(trim($one_rule),':') === false)
                     {
                         $method = explode(':',$one_rule);
+
                         if(method_exists ($this,trim($method[0])))
                         {
                             if(!strpos(trim($method[1]),',') === false)
@@ -113,9 +115,9 @@ class Check
                             if(!empty($error))
                             {
                                 $error = str_replace('{$name}',$k,$error);
-                                foreach($option as $key=>$v)
+                                foreach($option as $key=>$vo)
                                 {
-                                    $error = str_replace('{$option'.($key+1).'}',$v,$error);
+                                    $error = str_replace('{$option'.($key+1).'}',$vo,$error);
                                 }
                                 $this->errors[$k][] = $error;
                             }
@@ -124,8 +126,11 @@ class Check
                     //无参数
                     else
                     {
+
                         if(method_exists ($this,trim($one_rule)))
                         {
+//                            var_dump($v);
+//                            var_dump($one_rule);
                             $error=$this->{trim($one_rule)}(trim($v));
                             if(!empty($error))
                             {
@@ -230,5 +235,59 @@ class Check
         {
             return '';
         }
+    }
+
+    protected function tel($value)
+    {
+        $pattern = '/^(\(\d{3,4}\)|\d{3,4}-)?\d{7,8}$/';
+        if (!preg_match($pattern, $value))
+        {
+            return '{$name} 不是正确的电话号码';
+        }
+        else
+        {
+            return '';
+        }
+    }
+
+    protected function url($value)
+    {
+
+        if(!preg_match("/^http:\/\/[A-Za-z0-9]+\.[A-Za-z0-9]+[\/=\?%\-&_~`@[\]\’:+!]*([^<>\"])*$/", $value))
+        {
+            return '{$name} 不是url格式';
+        }
+        else
+        {
+            return '';
+        }
+
+    }
+    protected function mobile($value)
+    {
+
+        if(!preg_match("/^1[0-9]{10}$/", $value))
+        {
+            return '{$name} 不是mobile格式';
+        }
+        else
+        {
+            return '';
+        }
+
+    }
+
+    protected function fax($value)
+    {
+
+        if(!preg_match("/^(\d{3,4}-)?\d{7,8}$/", $value))
+        {
+            return '{$name} 不是mobile格式';
+        }
+        else
+        {
+            return '';
+        }
+
     }
 }
