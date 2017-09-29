@@ -5,6 +5,7 @@
  * Date: 17/8/2
  * Time: 下午9:17
  */
+namespace Check;
 //验证类
 class Check
 {
