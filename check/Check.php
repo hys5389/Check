@@ -20,16 +20,16 @@ class Check
     //单例对象
     protected static $me;
 
-/*------------------------------------------------------ */
+    /*------------------------------------------------------ */
 //-- 开发者可以使用的方法
-/**
- * 1.values
- * 2.rules
- * 3.msgs
- * 4.check
- */
+    /**
+     * 1.values
+     * 2.rules
+     * 3.msgs
+     * 4.check
+     */
 //-- Check::values($values)->rules([])->remsg([])->check();
-/*------------------------------------------------------ */
+    /*------------------------------------------------------ */
     protected function __construct($values)
     {
         $this->values = $values;
@@ -43,16 +43,17 @@ class Check
     //正确:返回当前对象
     public static function values($values)
     {
+
+        if(!(static::$me instanceof static))
+        {
+            static::$me = new static($values);
+        }
+        static::$me->init();
         if(!is_array($values) || empty($values))
         {
             static::$me->errors['system']['status'] ='error';
             static::$me->errors['system']['msg'] ='请填写正确形式的数据';
             return static::$me;
-        }
-        if(!(static::$me instanceof static))
-        {
-
-            static::$me = new static($values);
         }
         else
         {
@@ -146,21 +147,33 @@ class Check
         }
         return $this;
     }
-    public function errors(){
+    public function errors($re=''){
 
+        if($re=='remove')
+        {
+            $this->errors=array();
+            return true;
+        }
         return $this->errors;
     }
+    private function init(){
+        $this->values=array();
+        $this->rules=array();
+        $this->msgs=array();
+        $this->errors=array();
+    }
+
     public function jsonErrors(){
 
         return json_encode($this->errors);
     }
-/*------------------------------------------------------ */
+    /*------------------------------------------------------ */
 //-- 下面是内部操作的方法
-/*------------------------------------------------------ */
+    /*------------------------------------------------------ */
 
-/*------------------------------------------------------ */
+    /*------------------------------------------------------ */
 //-- 下面是验证的方法
-/*------------------------------------------------------ */
+    /*------------------------------------------------------ */
 
     /**
      * ------------------------------------------
