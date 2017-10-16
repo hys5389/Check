@@ -49,7 +49,7 @@ class Check
     //初始方法,获取需要验证的数据,以数组形式,
     //错误:return $this->errors
     //正确:返回当前对象
-    public static function data($values)
+    public static function values($values)
     {
         static::getInstance($values);
 
@@ -70,7 +70,7 @@ class Check
         return static::$me;
     }
 
-    public function values($values)
+    public function data($values)
     {
         $this->init();
         $this->values=$values;
@@ -267,7 +267,7 @@ class Check
     {
         $pattern = '/^(\(\d{3,4}\)|\d{3,4}-)?\d{7,8}$/';
         if (!preg_match($pattern, $value))
-        {
+        {require('../Check.php');
             return '{$name} 不是正确的电话号码';
         }
         else
