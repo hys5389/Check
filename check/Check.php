@@ -32,7 +32,15 @@ class Check
     /*------------------------------------------------------ */
     protected function __construct($values)
     {
-        $this->values = $values;
+        if(!is_array($values) || empty($values))
+        {
+            $this->errors['system']['status'] ='error';
+            $this->errors['system']['msg'] ='请填写正确形式的数据';
+        }
+        else
+        {
+            $this->values = $values;
+        }
     }
     protected function __clone()
     {
@@ -41,27 +49,33 @@ class Check
     //初始方法,获取需要验证的数据,以数组形式,
     //错误:return $this->errors
     //正确:返回当前对象
-    public static function values($values)
+    public static function data($values)
     {
+        static::getInstance($values);
 
-        if(!(static::$me instanceof static))
-        {
+        static::$me->values=$values;
+        return static::$me;
+    }
+
+    //单例
+    public static function getInstance($values=array())
+    {
+        if (!static::$me) {
             static::$me = new static($values);
-        }
-        static::$me->init();
-        if(!is_array($values) || empty($values))
-        {
-            static::$me->errors['system']['status'] ='error';
-            static::$me->errors['system']['msg'] ='请填写正确形式的数据';
-            return static::$me;
         }
         else
         {
-            static::$me->values = $values;
+            static::$me->init();
         }
         return static::$me;
     }
 
+    public function values($values)
+    {
+        $this->init();
+        $this->values=$values;
+        return $this;
+    }
     //验证规则,以数组形式
     public function rules($rules)
     {
@@ -156,13 +170,6 @@ class Check
         }
         return $this->errors;
     }
-    private function init(){
-        $this->values=array();
-        $this->rules=array();
-        $this->msgs=array();
-        $this->errors=array();
-    }
-
     public function jsonErrors(){
 
         return json_encode($this->errors);
@@ -170,7 +177,12 @@ class Check
     /*------------------------------------------------------ */
 //-- 下面是内部操作的方法
     /*------------------------------------------------------ */
-
+    private function init(){
+        $this->values=array();
+        $this->rules=array();
+        $this->msgs=array();
+        $this->errors=array();
+    }
     /*------------------------------------------------------ */
 //-- 下面是验证的方法
     /*------------------------------------------------------ */
