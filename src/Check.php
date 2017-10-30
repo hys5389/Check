@@ -28,7 +28,7 @@ class Check
      * 3.msgs
      * 4.check
      */
-//-- Check::values($values)->rules([])->remsg([])->check();
+//-- Check::values($values)->rules([])->msgs([])->check();
     /*------------------------------------------------------ */
     protected function __construct($values)
     {
@@ -285,7 +285,7 @@ class Check
     {
         $pattern = '/^(\(\d{3,4}\)|\d{3,4}-)?\d{7,8}$/';
         if (!preg_match($pattern, $value))
-        {require('../Check.php');
+        {
             return '{$name} 不是正确的电话号码';
         }
         else

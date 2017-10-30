@@ -17,7 +17,7 @@
 <font face="微软雅黑" size=3><br></font>
 
 ```
-Check::values($values)->rules($rules)->remsg($remsg)->check();
+Check::values($values)->rules($rules)->msgs($msgs)->check();
 
 ```
 <br>
