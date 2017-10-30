@@ -3,12 +3,12 @@
 ## 简介:
 <br>
 
-<font face="微软雅黑" size=3>在写项目的时候总是需要用到表单验证，很喜欢laravel的验证类，<br><br>所以结合自己的思路，写了一个自己喜欢的验证类；</font>
+<font face="微软雅黑" size=3>在写项目的时候总是需要用到表单验证<br><br>所以结合自己的思路，写了一个自己喜欢的验证类；</font>
 <br>
 <br>
 ### 适用php版本：
 <br>
-<font face="微软雅黑" size=5>php5.3+</font>
+<font face="微软雅黑" size=5>php5.4+</font>
 
 <br>
 
@@ -29,7 +29,7 @@ Check::values($values)->rules($rules)->msgs($msgs)->check();
 	
 	```
 	$values ＝ ［
-		'name' => 'abcdefg',
+		'title' => 'abcdefg',
 		'sex' => 'man',
 	];
 	```
@@ -37,16 +37,22 @@ Check::values($values)->rules($rules)->msgs($msgs)->check();
 
 	```
 	$rules ＝ ［
-		'name' => 'required|between:2,10|numeric',
+		'title' => 'required|between:2,10|numeric',
 		'sex' => 'required',
 	];
 	```
-3. $remsg -> array（自定义验证后返回的错误提示）
+3. $msgs -> array（自定义验证后返回的错误提示）
 
 	```
-	$remsg ＝ ［
-		'required' => '{$name} 不能为空',
-		'between' => '{$name} 必须在 {$option1} 与 {$option2} 之间',
+	$msgs ＝ ［
+		'title' => [
+            'required'=>'小伙子,标题不能为空',
+            'between'=>'长度要在{$option1} 与 {$option2} 之间',
+            'numeric'=>'必须是数字哦',
+		],
+		'sex' => [
+		    'required'=>'小伙子,性别不能为空',
+		]
 	];
 	```
 
