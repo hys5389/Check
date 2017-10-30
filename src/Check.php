@@ -92,7 +92,14 @@ class Check
     //配置错误信息,以数组形式
     public function msgs($msgs=array())
     {
-
+        if(!is_array($msgs) || empty($msgs))
+        {
+            $this->errors['system']['status'] ='error';
+            $this->errors['system']['msg'] ='请填写正确形式的错误消息';
+            return $this;
+        }
+        $this->msgs = $msgs;
+        return $this;
     }
 
     //验证
@@ -108,14 +115,17 @@ class Check
                 $one_rules = explode('|',$rules[$k]);
                 foreach($one_rules as $one_rule)
                 {
+                    $one_rule=trim($one_rule);
                     //有参数
-                    if(!strpos(trim($one_rule),':') === false)
+                    if(!strpos($one_rule,':') === false)
                     {
                         $method = explode(':',$one_rule);
 
-                        if(method_exists ($this,trim($method[0])))
+                        $method[0] = trim($method[0]);
+                        $method[1] = trim($method[1]);
+                        if(method_exists ($this,$method[0]))
                         {
-                            if(!strpos(trim($method[1]),',') === false)
+                            if(!strpos($method[1],',') === false)
                             {
                                 $option =array();
                                 $options = explode(',',$method[1]);
@@ -125,11 +135,16 @@ class Check
                             }
                             else
                             {
-                                $option =trim($method[1]);
+                                $option =$method[1];
                             }
-                            $error=$this->{trim($method[0])}($v,$option);
+                            $error=$this->{$method[0]}($v,$option);
+                            //处理错误
                             if(!empty($error))
                             {
+                                if($this->msgs[$k][$one_rule])
+                                {
+                                    $error=$this->msgs[$k][$one_rule];
+                                }
                                 $error = str_replace('{$name}',$k,$error);
                                 foreach($option as $key=>$vo)
                                 {
@@ -143,13 +158,16 @@ class Check
                     else
                     {
 
-                        if(method_exists ($this,trim($one_rule)))
+                        if(method_exists ($this,$one_rule))
                         {
-//                            var_dump($v);
-//                            var_dump($one_rule);
-                            $error=$this->{trim($one_rule)}(trim($v));
+                            $error=$this->{$one_rule}(trim($v));
+                            //处理错误
                             if(!empty($error))
                             {
+                                if($this->msgs[$k][$one_rule])
+                                {
+                                    $error=$this->msgs[$k][$one_rule];
+                                }
                                 $error = str_replace('{$name}',$k,$error);
                                 $this->errors[$k][] = $error;
                             }
