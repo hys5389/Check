@@ -18,7 +18,7 @@ class Check
     //错误信息
     protected $errors=array();
     //单例对象
-    protected static $nstance;
+    protected static $instance;
 
     /*------------------------------------------------------ */
 //-- 开发者可以使用的方法
