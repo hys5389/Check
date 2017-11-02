@@ -151,6 +151,10 @@ class Check
             $this->errors=array();
             return true;
         }
+        if(empty($this->errors))
+        {
+            return false;
+        }
         return $this->errors;
     }
     public function jsonErrors(){
@@ -160,7 +164,6 @@ class Check
     /*------------------------------------------------------ */
 //-- 下面是内部操作的方法
     /*------------------------------------------------------ */
-    //重置
     private function init(){
         $this->values=array();
         $this->rules=array();
@@ -168,7 +171,6 @@ class Check
         $this->msgs=array();
         $this->errors=array();
     }
-    //有参数操作
     private function paramsCheck($one_rule,$k,$v)
     {
         $method = explode(':',$one_rule);
@@ -214,7 +216,6 @@ class Check
             }
         }
     }
-    //无参数操作
     private function unParamsCheck($one_rule,$k,$v)
     {
         if(method_exists ($this,$one_rule))
@@ -360,6 +361,7 @@ class Check
         }
 
     }
+
     protected function fax($value)
     {
 
