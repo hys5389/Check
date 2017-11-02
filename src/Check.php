@@ -326,7 +326,7 @@ class Check
 
         if(!preg_match("/^(\d{3,4}-)?\d{7,8}$/", $value))
         {
-            return '{$name} 不是mobile格式';
+            return '{$name} 不是传真格式';
         }
         else
         {
