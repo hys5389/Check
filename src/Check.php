@@ -13,6 +13,8 @@ class Check
     protected $values=array();
     //规则
     protected $rules=array();
+    //规则
+    protected $alias=array();
     //报错代替
     protected $msgs=array();
     //错误信息
@@ -89,6 +91,17 @@ class Check
         return $this;
     }
 
+    public function alias($alias)
+    {
+        if(!is_array($alias) || empty($alias))
+        {
+            $this->errors['system']['status'] ='error';
+            $this->errors['system']['msg'] ='请填写正确形式的别名';
+            return $this;
+        }
+        $this->alias = $alias;
+        return $this;
+    }
     //配置错误信息,以数组形式
     public function msgs($msgs=array())
     {
@@ -119,60 +132,12 @@ class Check
                     //有参数
                     if(!strpos($one_rule,':') === false)
                     {
-                        $method = explode(':',$one_rule);
-
-                        $method[0] = trim($method[0]);
-                        $method[1] = trim($method[1]);
-                        if(method_exists ($this,$method[0]))
-                        {
-                            if(!strpos($method[1],',') === false)
-                            {
-                                $option =array();
-                                $options = explode(',',$method[1]);
-                                foreach ($options as $item) {
-                                    $option[] = trim($item);
-                                }
-                            }
-                            else
-                            {
-                                $option =$method[1];
-                            }
-                            $error=$this->{$method[0]}($v,$option);
-                            //处理错误
-                            if(!empty($error))
-                            {
-                                if($this->msgs[$k][$one_rule])
-                                {
-                                    $error=$this->msgs[$k][$one_rule];
-                                }
-                                $error = str_replace('{$name}',$k,$error);
-                                foreach($option as $key=>$vo)
-                                {
-                                    $error = str_replace('{$option'.($key+1).'}',$vo,$error);
-                                }
-                                $this->errors[$k][] = $error;
-                            }
-                        }
+                        $this->paramsCheck($one_rule,$k,$v);
                     }
                     //无参数
                     else
                     {
-
-                        if(method_exists ($this,$one_rule))
-                        {
-                            $error=$this->{$one_rule}(trim($v));
-                            //处理错误
-                            if(!empty($error))
-                            {
-                                if($this->msgs[$k][$one_rule])
-                                {
-                                    $error=$this->msgs[$k][$one_rule];
-                                }
-                                $error = str_replace('{$name}',$k,$error);
-                                $this->errors[$k][] = $error;
-                            }
-                        }
-
+                        $this->unParamsCheck($one_rule,$k,$v);
                     }
                 }
             }
@@ -195,11 +160,86 @@ class Check
     /*------------------------------------------------------ */
 //-- 下面是内部操作的方法
     /*------------------------------------------------------ */
+    //重置
     private function init(){
         $this->values=array();
         $this->rules=array();
+        $this->alias=array();
         $this->msgs=array();
         $this->errors=array();
+    }
+    //有参数操作
+    private function paramsCheck($one_rule,$k,$v)
+    {
+        $method = explode(':',$one_rule);
+        $method[0] = trim($method[0]);
+        $method[1] = trim($method[1]);
+        if(method_exists ($this,$method[0]))
+        {
+            if(!strpos($method[1],',') === false)
+            {
+                $option =array();
+                $options = explode(',',$method[1]);
+                foreach ($options as $item) {
+                    $option[] = trim($item);
+                }
+            }
+            else
+            {
+                $option =$method[1];
+            }
+            $error=$this->{$method[0]}($v,$option);
+            //处理错误
+            if(!empty($error))
+            {
+                //自定义数据
+                if($this->msgs[$k][$one_rule])
+                {
+                    $error=$this->msgs[$k][$one_rule];
+                }
+                //别名
+                if(isset($this->alias[$k]))
+                {
+                    $error = str_replace('{$name}',$this->alias[$k],$error);
+                }
+                else
+                {
+                    $error = str_replace('{$name}',$k,$error);
+                }
+                foreach($option as $key=>$vo)
+                {
+                    $error = str_replace('{$option'.($key+1).'}',$vo,$error);
+                }
+                $this->errors[$k][] = $error;
+            }
+        }
+    }
+    //无参数操作
+    private function unParamsCheck($one_rule,$k,$v)
+    {
+        if(method_exists ($this,$one_rule))
+        {
+            $error=$this->{$one_rule}(trim($v));
+            //处理错误
+            if(!empty($error))
+            {
+                //自定义数据
+                if($this->msgs[$k][$one_rule])
+                {
+                    $error=$this->msgs[$k][$one_rule];
+                }
+                //别名
+                if(isset($this->alias[$k]))
+                {
+                    $error = str_replace('{$name}',$this->alias[$k],$error);
+                }
+                else
+                {
+                    $error = str_replace('{$name}',$k,$error);
+                }
+                $this->errors[$k][] = $error;
+            }
+        }
     }
     /*------------------------------------------------------ */
 //-- 下面是验证的方法
@@ -215,7 +255,7 @@ class Check
     {
         if(empty($value))
         {
-            return '{$name} 不能为空!';
+            return '{$name}不能为空!';
         }
         else
         {
@@ -234,7 +274,7 @@ class Check
     {
         if(!preg_match("/^[0-9]+$/", $value))
         {
-            return '{$name} 必须是数字!';
+            return '{$name}必须是数字!';
         }
         else
         {
@@ -248,7 +288,7 @@ class Check
 
         if(!preg_match($pattern, $value))
         {
-            return '{$name} 不是email格式';
+            return '{$name}不是email格式';
         }
         else
         {
@@ -273,7 +313,7 @@ class Check
 
         if($length < $minLength || $length > $maxLength)
         {
-            return '{$name} 必须在 {$option1} ~ {$option2} 之间';
+            return '{$name}必须在 {$option1} ~ {$option2} 之间';
         }
         else
         {
@@ -286,7 +326,7 @@ class Check
         $pattern = '/^(\(\d{3,4}\)|\d{3,4}-)?\d{7,8}$/';
         if (!preg_match($pattern, $value))
         {
-            return '{$name} 不是正确的电话号码';
+            return '{$name}不是正确的电话号码';
         }
         else
         {
@@ -320,7 +360,6 @@ class Check
         }
 
     }
-
     protected function fax($value)
     {
 
