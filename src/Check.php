@@ -18,7 +18,7 @@ class Check
     //错误信息
     protected $errors=array();
     //单例对象
-    protected static $me;
+    protected static $nstance;
 
     /*------------------------------------------------------ */
 //-- 开发者可以使用的方法
@@ -53,21 +53,21 @@ class Check
     {
         static::getInstance($values);
 
-        static::$me->values=$values;
-        return static::$me;
+        static::$instance->values=$values;
+        return static::$instance;
     }
 
     //单例
     public static function getInstance($values=array())
     {
-        if (!static::$me) {
-            static::$me = new static($values);
+        if (!static::$instance) {
+            static::$instance = new static($values);
         }
         else
         {
-            static::$me->init();
+            static::$instance->init();
         }
-        return static::$me;
+        return static::$instance;
     }
 
     public function data($values)
