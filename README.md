@@ -46,12 +46,12 @@ Check::values($values)->rules($rules)->msgs($msgs)->check();
 	```
 	$msgs ＝ ［
 		'title' => [
-                'required'=>'小伙子,标题不能为空',
+                'required'=>'标题不能为空',
                 'between'=>'长度要在{$option1} 与 {$option2} 之间',
                 'numeric'=>'必须是数字哦',
 		],
 		'sex' => [
-		    'required'=>'小伙子,性别不能为空',
+		    'required'=>'性别不能为空',
 		]
 	];
 	```
